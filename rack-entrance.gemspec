@@ -17,6 +17,8 @@ Gem::Specification.new do |spec|
 
   spec.rdoc_options.concat ['--encoding',  'UTF-8']
 
+  spec.add_dependency('rack')
+
   spec.add_development_dependency('rack-test')
   spec.add_development_dependency('rspec')
   spec.add_development_dependency('guard-rspec')
