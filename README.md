@@ -4,10 +4,6 @@
 
 A tiny middleware that determines whether this request was from the internal network or not.
 
-# Dependencies
-
-actionpack
-
 # Installation
 
 ```bash
