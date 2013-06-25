@@ -10,7 +10,9 @@ module Rack
     def call(env)
       request = Rack::Request.new(env)
       ip = env["action_dispatch.remote_ip"] || request.ip
-      request.env['entrance.internal'] = internal? ip
+      request.env['entrance.ip']           = ip
+      request.env['entrance.internal_ips'] = internal_ips
+      request.env['entrance.internal']     = internal?(ip)
       @app.call env
     end
 
