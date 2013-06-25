@@ -11,7 +11,7 @@ describe Rack::Entrance do
 
   context 'internal request' do
     before do
-      ENV['ENTRANCE_INTERNAL_IPS'] = '127.0.0.1'
+      ENV['ENTRANCE_INTERNAL_IPS'] = '127.0.0.1,203.0.113.255'
       get '/'
     end
 

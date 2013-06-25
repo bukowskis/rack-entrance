@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-entrance (0.0.1)
+    rack-entrance (0.0.2)
       rack
 
 GEM
