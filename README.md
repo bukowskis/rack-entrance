@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bukowskis/rack-entrance.png)](https://travis-ci.org/bukowskis/rack-entrance)
+
 # Entrace
 
 A tiny middleware that determines whether this request was from the internal network or not.
