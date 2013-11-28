@@ -17,7 +17,10 @@ module Rack
     end
 
     def internal?(ip)
-      internal_ips.include? ip
+      internal_ips.each do |internal_ip|
+        return true if ip.to_s.start_with?(internal_ip)
+      end
+      false
     end
 
     def internal_ips

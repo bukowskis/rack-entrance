@@ -20,6 +20,17 @@ describe Rack::Entrance do
     end
   end
 
+  context 'internal request by prefix' do
+    before do
+      ENV['ENTRANCE_INTERNAL_IPS'] = '203.0.113.255,127.0.'
+      get '/'
+    end
+
+    it 'sets internal to true' do
+      last_request.env['entrance.internal'].should be_true
+    end
+  end
+
   context 'external request' do
     before do
       ENV['ENTRANCE_INTERNAL_IPS'] = '192.0.2.21,203.0.113.255'
