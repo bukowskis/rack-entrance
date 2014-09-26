@@ -15,7 +15,7 @@ gem install rack-entrance
 #### Add it to your middleware stack
 
 ```ruby
-ENV['ENTRANCE_INTERNAL_IPS'] = "127.0.0.1,192.0.2.21"
+ENV['ENTRANCE_INTERNAL_CIDRS'] = "127.0.0.1,192.0.2.21"
 use Rack::Entrance
 ````
 

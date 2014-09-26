@@ -1,4 +1,5 @@
 require 'rack'
+require 'ipaddr'
 
 module Rack
   class Entrance
@@ -7,24 +8,44 @@ module Rack
       @app = app
     end
 
+    def self.internal_cidrs
+      ENV['ENTRANCE_INTERNAL_CIDRS'].to_s.split ','
+    end
+
     def call(env)
-      request = Rack::Request.new(env)
-      ip = (env["action_dispatch.remote_ip"] || request.ip).to_s
-      request.env['entrance.ip']           = ip
-      request.env['entrance.internal_ips'] = internal_ips
-      request.env['entrance.internal']     = internal?(ip)
+      @env = env
+      request.env['entrance.user_ip']        = user_ip.to_s if user_ip.to_s != ''
+      request.env['entrance.internal_cidrs'] = self.class.internal_cidrs
+      request.env['entrance.internal']       = internal?
       @app.call env
     end
 
-    def internal?(ip)
-      internal_ips.each do |internal_ip|
-        return true if ip.to_s.start_with?(internal_ip)
-      end
-      false
+    def request
+      ::Rack::Request.new @env
+    end
+
+    def raw_user_ip
+      (@env["action_dispatch.remote_ip"] || request.ip).to_s
+    end
+
+    def user_ip
+      ::IPAddr.new raw_user_ip
+    rescue ArgumentError
+      nil
+    end
+
+    def internal?
+      internal_ips.any? { |ip| ip.include?(user_ip) }
     end
 
     def internal_ips
-      @internal_ips ||= ENV['ENTRANCE_INTERNAL_IPS'].to_s.split(',')
+      @internal_ips ||= self.class.internal_cidrs.map do |cidr|
+        begin
+          ::IPAddr.new cidr
+        rescue ArgumentError
+          nil
+        end
+      end.compact
     end
 
   end
